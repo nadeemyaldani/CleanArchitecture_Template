@@ -1,0 +1,6 @@
+@__MyServiceName__.Presentation_HostAddress = http://localhost:5210
+
+GET {{__MyServiceName__.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Nadeem",
+  "classifications": [ "Clean Architecture", "Microservice" ],
+  "identity": "CleanArchitecture.ServiceTemplate",
+  "name": "Clean Architecture Service Template",
+  "shortName": "clean-service",
+  "sourceName": "{{MyServiceName}}",
+  "preferNameDirectory": true,
+  "symbols": {
+    "MyServiceName": {
+      "type": "parameter",
+      "datatype": "string",
+      "description": "The name of the service",
+      "defaultValue": "MyServiceName"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "src/{{MyServiceName}}.API/{{MyServiceName}}.API.csproj" },
+    { "path": "src/{{MyServiceName}}.Application/{{MyServiceName}}.Application.csproj" },
+    { "path": "src/{{MyServiceName}}.Domain/{{MyServiceName}}.Domain.csproj" },
+    { "path": "src/{{MyServiceName}}.Infrastructure/{{MyServiceName}}.Infrastructure.csproj" },
+    { "path": "src/{{MyServiceName}}.Tests/{{MyServiceName}}.Tests.csproj" }
+  ]
+}
