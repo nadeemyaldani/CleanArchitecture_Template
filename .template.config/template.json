@@ -92,10 +92,10 @@
     }
   ],
   "primaryOutputs": [
-    {
-      "path": "{{MyServiceName}}.API/{{MyServiceName}}.API.csproj",
-      "condition": "true"
-    },
+    //{
+    //  "path": "{{MyServiceName}}.API/{{MyServiceName}}.API.csproj",
+    //  "condition": "true"
+    //},
     {
       "path": "{{MyServiceName}}.Application/{{MyServiceName}}.Application.csproj",
       "condition": "true"
