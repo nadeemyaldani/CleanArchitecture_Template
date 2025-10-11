@@ -1,9 +1,9 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Nadeem Yaldani",
-  "classifications": [ "Clean Architecture", "Microservice", "Web API", "CQRS" ],
+  "classifications": [ "Clean Architecture", "Web API", "CQRS" ],
   "identity": "CleanArchitecture.ServiceTemplate",
-  "name": "Clean Architecture Microservice Template",
+  "name": "Clean Architecture Template",
   "shortName": "clean-service",
   "sourceName": "{{MyServiceName}}",
   "preferNameDirectory": true,
@@ -19,6 +19,49 @@
       "defaultValue": "MyServiceName",
       "isRequired": true,
       "replaces": "{{MyServiceName}}"
+    },
+    "ProjectStructure": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "Project structure type",
+      "defaultValue": "Solution",
+      "choices": [
+        {
+          "choice": "Solution",
+          "description": "Create a new solution with all projects"
+        },
+        {
+          "choice": "Standalone",
+          "description": "Create projects without solution file"
+        },
+        {
+          "choice": "Microservice",
+          "description": "Add as microservice to existing solution"
+        }
+      ]
+    },
+    "SolutionPath": {
+      "type": "parameter",
+      "datatype": "string",
+      "description": "Path to existing solution file (only for Standalone/Microservice)",
+      "defaultValue": "",
+      "replaces": "{{SolutionPath}}"
+    },
+    "IsSolution": {
+      "type": "computed",
+      "value": "(ProjectStructure == \"Solution\")"
+    },
+    "IsStandalone": {
+      "type": "computed",
+      "value": "(ProjectStructure == \"Standalone\")"
+    },
+    "IsMicroservice": {
+      "type": "computed",
+      "value": "(ProjectStructure == \"Microservice\")"
+    },
+    "HasSolutionPath": {
+      "type": "computed",
+      "value": "(SolutionPath != \"\")"
     },
     "UseEventHandler": {
       "type": "parameter",
@@ -69,6 +112,18 @@
     {
       "modifiers": [
         {
+          "exclude": [
+            ".git/**",
+            ".gitignore"
+          ]
+        },
+        {
+          "condition": "(IsStandalone || IsMicroservice)",
+          "exclude": [
+            "*.sln"
+          ]
+        },
+        {
           "condition": "(!UseEventHandler)",
           "exclude": [
             "{{MyServiceName}}.EventHandler/**"
@@ -92,10 +147,6 @@
     }
   ],
   "primaryOutputs": [
-    //{
-    //  "path": "{{MyServiceName}}.API/{{MyServiceName}}.API.csproj",
-    //  "condition": "true"
-    //},
     {
       "path": "{{MyServiceName}}.Application/{{MyServiceName}}.Application.csproj",
       "condition": "true"
@@ -134,6 +185,7 @@
       "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
       "continueOnError": true,
       "description": "Restore NuGet packages",
+      "condition": "(IsSolution || IsStandalone)",
       "manualInstructions": [
         {
           "text": "Run 'dotnet restore'"
@@ -144,9 +196,32 @@
       "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
       "continueOnError": true,
       "description": "Open solution in IDE",
+      "condition": "(IsSolution)",
       "manualInstructions": [
         {
           "text": "Open {{MyServiceName}}.sln in your IDE"
+        }
+      ]
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "continueOnError": true,
+      "description": "Add projects to existing solution",
+      "condition": "((IsStandalone || IsMicroservice) && HasSolutionPath)",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet sln {{SolutionPath}} add {{MyServiceName}}.*/*.csproj' to add projects to solution"
+        }
+      ]
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "continueOnError": true,
+      "description": "Manual solution addition required",
+      "condition": "((IsStandalone || IsMicroservice) && !HasSolutionPath)",
+      "manualInstructions": [
+        {
+          "text": "To add to existing solution, run: dotnet sln <path-to-solution> add {{MyServiceName}}.*/*.csproj"
         }
       ]
     }
