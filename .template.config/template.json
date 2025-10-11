@@ -1,25 +1,154 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "Nadeem",
-  "classifications": [ "Clean Architecture", "Microservice" ],
+  "author": "Nadeem Yaldani",
+  "classifications": [ "Clean Architecture", "Microservice", "Web API", "CQRS" ],
   "identity": "CleanArchitecture.ServiceTemplate",
-  "name": "Clean Architecture Service Template",
+  "name": "Clean Architecture Microservice Template",
   "shortName": "clean-service",
   "sourceName": "{{MyServiceName}}",
   "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
   "symbols": {
     "MyServiceName": {
       "type": "parameter",
       "datatype": "string",
       "description": "The name of the service",
-      "defaultValue": "MyServiceName"
+      "defaultValue": "MyServiceName",
+      "isRequired": true,
+      "replaces": "{{MyServiceName}}"
+    },
+    "UseEventHandler": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Event Handler project for async messaging",
+      "defaultValue": "true"
+    },
+    "AddSampleEntity": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include sample entity with CQRS implementation",
+      "defaultValue": "true"
+    },
+    "DatabaseProvider": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "Database provider to use",
+      "defaultValue": "SqlServer",
+      "choices": [
+        {
+          "choice": "SqlServer",
+          "description": "SQL Server"
+        },
+        {
+          "choice": "PostgreSQL",
+          "description": "PostgreSQL"
+        },
+        {
+          "choice": "MySQL",
+          "description": "MySQL"
+        }
+      ]
+    },
+    "IncludeDocker": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Docker support",
+      "defaultValue": "true"
+    },
+    "IncludeTests": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include test projects",
+      "defaultValue": "true"
     }
   },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!UseEventHandler)",
+          "exclude": [
+            "{{MyServiceName}}.EventHandler/**"
+          ]
+        },
+        {
+          "condition": "(!IncludeDocker)",
+          "exclude": [
+            "Dockerfile",
+            "docker-compose.yml",
+            ".dockerignore"
+          ]
+        },
+        {
+          "condition": "(!IncludeTests)",
+          "exclude": [
+            "{{MyServiceName}}.Tests/**"
+          ]
+        }
+      ]
+    }
+  ],
   "primaryOutputs": [
-    { "path": "src/{{MyServiceName}}.API/{{MyServiceName}}.API.csproj" },
-    { "path": "src/{{MyServiceName}}.Application/{{MyServiceName}}.Application.csproj" },
-    { "path": "src/{{MyServiceName}}.Domain/{{MyServiceName}}.Domain.csproj" },
-    { "path": "src/{{MyServiceName}}.Infrastructure/{{MyServiceName}}.Infrastructure.csproj" },
-    { "path": "src/{{MyServiceName}}.Tests/{{MyServiceName}}.Tests.csproj" }
+    {
+      "path": "{{MyServiceName}}.API/{{MyServiceName}}.API.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.Application/{{MyServiceName}}.Application.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.Domain/{{MyServiceName}}.Domain.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.Infrastructure/{{MyServiceName}}.Infrastructure.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.Contracts/{{MyServiceName}}.Contracts.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.Common/{{MyServiceName}}.Common.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.Presentation/{{MyServiceName}}.Presentation.csproj",
+      "condition": "true"
+    },
+    {
+      "path": "{{MyServiceName}}.EventHandler/{{MyServiceName}}.EventHandler.csproj",
+      "condition": "(UseEventHandler)"
+    },
+    {
+      "path": "{{MyServiceName}}.Tests/{{MyServiceName}}.Tests.csproj",
+      "condition": "(IncludeTests)"
+    }
+  ],
+  "postActions": [
+    {
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true,
+      "description": "Restore NuGet packages",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet restore'"
+        }
+      ]
+    },
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "continueOnError": true,
+      "description": "Open solution in IDE",
+      "manualInstructions": [
+        {
+          "text": "Open {{MyServiceName}}.sln in your IDE"
+        }
+      ]
+    }
   ]
 }
