@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "{{MyServiceName}}.Test", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "{{MyServiceName}}.Common", "{{MyServiceName}}.Common\{{MyServiceName}}.Common.csproj", "{7E7FDED1-44B8-4851-B1BE-1A90B72B4F54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "{{MyServiceName}}.DomainEvent", "{{MyServiceName}}.EventHandler\{{MyServiceName}}.DomainEvent.csproj", "{46F66B87-5AFD-4C27-A19E-38A646A295B1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "{{MyServiceName}}.Presentation", "{{MyServiceName}}.Presentation\{{MyServiceName}}.Presentation.csproj", "{C7520AC9-E4DD-432F-8170-57BFAC1E58E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "{{MyServiceName}}.Contracts", "{{MyServiceName}}.Contracts\{{MyServiceName}}.Contracts.csproj", "{6AD9EED3-3CE3-4E0B-9125-75CB7289F370}"
@@ -47,10 +45,6 @@ Global
 		{7E7FDED1-44B8-4851-B1BE-1A90B72B4F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E7FDED1-44B8-4851-B1BE-1A90B72B4F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E7FDED1-44B8-4851-B1BE-1A90B72B4F54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46F66B87-5AFD-4C27-A19E-38A646A295B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46F66B87-5AFD-4C27-A19E-38A646A295B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46F66B87-5AFD-4C27-A19E-38A646A295B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46F66B87-5AFD-4C27-A19E-38A646A295B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7520AC9-E4DD-432F-8170-57BFAC1E58E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7520AC9-E4DD-432F-8170-57BFAC1E58E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7520AC9-E4DD-432F-8170-57BFAC1E58E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
