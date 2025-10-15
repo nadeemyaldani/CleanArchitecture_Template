@@ -1,38 +1,47 @@
-﻿using __MyServiceName__.Identity.Middlewares;
+﻿using __MyServiceName__.Identity.Domain.Entities;
+using __MyServiceName__.Identity.Middlewares;
+using __MyServiceName__.Identity.Models;
+using __MyServiceName__.Identity.Services;
+using __MyServiceName__.Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
-namespace __MyServiceName__.Identity
+namespace __MyServiceName__.Identity;
+
+public static class IdentityModuleExtensions
 {
-    public static class IdentityModuleExtensions
+    public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("IdentityDb")));
+        var builder = new ConfigurationBuilder()
+        .SetBasePath(AppContext.BaseDirectory)
+        .AddJsonFile("secret.json", optional: false, reloadOnChange: true);
 
-            services.AddIdentityCore<ApplicationUser>(options => { })
-                .AddEntityFrameworkStores<IdentityContext>();
-            services.AddIdentityCore<ApplicationRole>(options => { });
-            //services.AddIdentity<ApplicationUser, ApplicationRole>()
-            //    .AddEntityFrameworkStores<IdentityContext>()
-            //    .AddDefaultTokenProviders();
+        var identityConfig = builder.Build();
 
+        services.Configure<JwtOptions>(identityConfig.GetSection("Jwt"));
 
-            return services;
-        }
+        services.AddScoped<ITokenService>(sp =>
+            new TokenService(identityConfig)
+        );
 
-        public static IApplicationBuilder UseIdentityModule(this IApplicationBuilder app)
-        {
-            app.UseMiddleware<IdentityMiddleware>();
-            return app;
-        }
+        services.AddDbContext<IdentityContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
+        services.AddIdentityCore<ApplicationUser>()
+            .AddRoles<ApplicationRole>()
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders();
+
+        return services;
+
+    }
+
+    public static IApplicationBuilder UseIdentityModule(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<IdentityMiddleware>();
+        return app;
     }
 }

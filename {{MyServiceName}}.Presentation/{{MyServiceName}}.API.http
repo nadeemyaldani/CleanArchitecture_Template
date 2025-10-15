@@ -1,6 +1,0 @@
-@__MyServiceName__.API_HostAddress = http://localhost:5076
-
-GET {{__MyServiceName__.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

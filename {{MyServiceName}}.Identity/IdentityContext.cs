@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using __MyServiceName__.Identity.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,15 +31,5 @@ namespace __MyServiceName__.Identity
                 b.ToTable("ApplicationRoles");
             });
         }
-    }
-
-    public class ApplicationUser : IdentityUser
-    {
-        // Add extra properties here
-    }
-
-    public class ApplicationRole : IdentityRole
-    {
-        // Add extra properties here
     }
 }
