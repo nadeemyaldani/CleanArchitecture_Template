@@ -21,14 +21,16 @@ public static class IdentityModuleExtensions
 
         var identityConfig = builder.Build();
 
-        services.Configure<JwtOptions>(identityConfig.GetSection("Jwt"));
+        services.AddOptions<JwtOptions>()
+            .Bind(identityConfig.GetSection("Jwt"))
+            .ValidateDataAnnotations()   
+            .ValidateOnStart();          
 
-        services.AddScoped<ITokenService>(sp =>
-            new TokenService(identityConfig)
-        );
+
+        services.AddScoped<ITokenService, TokenService>();
 
         services.AddDbContext<IdentityContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+            options.UseSqlServer(identityConfig.GetConnectionString("IdentityConnection")));
 
         services.AddIdentityCore<ApplicationUser>()
             .AddRoles<ApplicationRole>()

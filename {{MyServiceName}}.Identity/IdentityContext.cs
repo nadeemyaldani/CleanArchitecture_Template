@@ -16,6 +16,11 @@ namespace __MyServiceName__.Identity
         public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options) { }
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

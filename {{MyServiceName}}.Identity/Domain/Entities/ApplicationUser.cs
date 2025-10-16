@@ -9,6 +9,6 @@ namespace __MyServiceName__.Identity.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string? FullName { get; internal set; }
+        public string DisplayName { get; set; }
     }
 }
