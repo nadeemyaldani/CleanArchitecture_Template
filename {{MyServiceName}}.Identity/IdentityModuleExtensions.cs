@@ -46,4 +46,9 @@ public static class IdentityModuleExtensions
         app.UseMiddleware<IdentityMiddleware>();
         return app;
     }
+
+    //public static IEndpointRouteBuilder MapIdentityEndpoints(this IEndpointRouteBuilder endpoints)
+    //{
+
+    //}
 }
